@@ -1,5 +1,5 @@
 from .api.accounts import Accounts
-from .api.currencyRate import CurrencyRate
+from .api.currencyRates import CurrencyRates
 from .api.classifications import Classifications
 from .api.credit_memos import CreditMemos
 from .api.departments import Departments
@@ -43,7 +43,7 @@ class NetSuiteConnection:
             token_secret=token_secret
         )
         self.client = ns_client
-        self.currencyRate = CurrencyRate(ns_client)
+        self.currencyRates = CurrencyRates(ns_client)
         self.accounts = Accounts(ns_client)
         self.classifications = Classifications(ns_client)
         self.departments = Departments(ns_client)
