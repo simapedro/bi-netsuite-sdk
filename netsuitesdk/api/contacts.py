@@ -7,15 +7,23 @@ class Contacts(ApiBase):
 
     def __init__(self, ns_client):
         ApiBase.__init__(self, ns_client=ns_client, type_name='Contact')
-
-    def get_all(self):
-        return self._get_all()
-
-    def get_all_generator(self, page_size=20):
+  
+    def search(self, attribute, value, operator):
         """
-        Returns a generator which is more efficient memory-wise
+        Search Record
+        :param attribute: name of the field, eg. entityId
+        :param value: value of the field, eg. Amazon
+        :param operator: search matching operator, eg., 'contains', 'is', 'anyOf'
+        :return:
         """
-        return self._get_all_generator()
+        records = self.ns_client.basic_stringfield_search(
+            type_name=self.type_name,
+            attribute=attribute,
+            value=value,
+            operator=operator
+        )
+
+        return records
 
 
         
