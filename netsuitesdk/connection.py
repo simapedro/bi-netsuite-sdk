@@ -1,5 +1,6 @@
 from .api.accounts import Accounts
 from .api.currencyRates import CurrencyRates
+from .api.contacts import Contacts
 from .api.classifications import Classifications
 from .api.credit_memos import CreditMemos
 from .api.departments import Departments
@@ -44,6 +45,7 @@ class NetSuiteConnection:
         )
         self.client = ns_client
         self.currencyRates = CurrencyRates(ns_client)
+        self.contacts = Contacts(ns_client)
         self.accounts = Accounts(ns_client)
         self.classifications = Classifications(ns_client)
         self.departments = Departments(ns_client)
