@@ -32,6 +32,30 @@ class ApiBase:
 
         return records
 
+    def search_currency_rates(self, base_currency, transaction_currency, effective_date):
+        """
+        Search for Currency Rate records in NetSuite.
+
+        :param base_currency: Base currency (e.g., 'USD')
+        :param transaction_currency: Transaction currency (e.g., 'EUR')
+        :param effective_date: Effective date for the rate (e.g., '2024-02-01')
+        :return: Currency Rate records
+        """
+        search_criteria = {
+            "basic": {
+                "baseCurrency": [{"operator": "anyOf", "searchValue": base_currency}],
+                "transactionCurrency": [{"operator": "anyOf", "searchValue": transaction_currency}],
+                "effectiveDate": [{"operator": "onOrBefore", "searchValue": effective_date}]
+            }
+        }
+
+        try:
+            records = self.ns_client.search(record_type="CurrencyRate", search_criteria=search_criteria)
+            return records
+        except Exception as e:
+            print(f"Error fetching currency rates: {e}")
+            return None
+
     def get_all(self):
         generated_records = self.get_all_generator()
         all_records = []
