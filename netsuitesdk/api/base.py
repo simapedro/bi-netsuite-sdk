@@ -40,17 +40,21 @@ class ApiBase:
         :param transaction_currency: Transaction currency (e.g., 'EUR')
         :param effective_date: Effective date for the rate (e.g., '2024-02-01')
         :return: Currency Rate records
-        
         """
-        
-        records = self.ns_client.basic_stringfield_search(
-            type_name=self.type_name,
-            base_currency=attribute,
-            transaction_currency=value,
-            effective_date=operator
-        )
+        search_criteria = {
+            "basic": {
+                "baseCurrency": [{"operator": "anyOf", "searchValue": base_currency}],
+                "transactionCurrency": [{"operator": "anyOf", "searchValue": transaction_currency}],
+                "effectiveDate": [{"operator": "onOrBefore", "searchValue": effective_date}]
+            }
+        }
 
-        return records
+        try:
+            records = self.ns_client.search(record_type="CurrencyRate", search_criteria=search_criteria)
+            return records
+        except Exception as e:
+            print(f"Error fetching currency rates: {e}")
+            return None
 
     def get_all(self):
         generated_records = self.get_all_generator()
